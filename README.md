@@ -1,7 +1,7 @@
-# Laptop & Desktop Price Prediction
+# Car Price Prediction & Dimensionality Reduction
 
-Feature engineering project to predict computer prices based on hardware 
-specifications, built as part of a 4-person team.
+Exploratory data analysis and dimensionality reduction using PCA on automobile 
+technical specifications to understand the key drivers of vehicle pricing.
 
 ### Version
 
@@ -11,67 +11,59 @@ specifications, built as part of a 4-person team.
 
 ## Problem Statement
 
-With thousands of laptop and desktop configurations on the market, pricing is 
-driven by a complex combination of hardware specs, brand, OS, and connectivity. 
-This project applies advanced feature engineering techniques to prepare a 
-100,000-record dataset for price prediction modeling.
+Automobile pricing is influenced by dozens of technical and qualitative features — 
+engine specs, dimensions, fuel type, body style, and insurance risk ratings. This 
+project applies Principal Component Analysis (PCA) to reduce dimensionality, 
+identify the most meaningful feature combinations, and understand the variance 
+structure driving car prices.
 
 ## Dataset
 
-- **Source:** Kaggle — Computer Prices Dataset
-- **Records:** 100,000 devices
-- **Features:**
-  - `device_type` — Laptop or Desktop
-  - `brand`, `model`, `release_year`, `os`, `form_factor`
-  - `cpu_brand`, `cpu_model`, `cpu_tier`, `cpu_cores`, `cpu_threads`
-  - `gpu_brand`, `gpu_model`, `gpu_tier`, `vram_gb`
-  - `ram_gb`, `storage_gb`, `storage_drive_count`
-  - `wifi`, `bluetooth`, `weight_kg`, `warranty_months`
+- **Source:** UCI Machine Learning Repository — Automobile Dataset
+- **Key Features:**
+  - `make` — Brand (Audi, BMW, Honda, etc.)
+  - `fuel_type`, `aspiration`, `body_style`, `drive_wheels` — Vehicle specs
+  - `engine_type`, `num_cylinders`, `engine_size`, `horsepower` — Engine specs
+  - `curb_weight`, `length`, `width`, `height`, `wheel_base` — Dimensions
+  - `city_mpg`, `highway_mpg` — Fuel efficiency
+  - `symboling` — Insurance risk rating (-3 to +3)
+  - `normalized_losses` — Normalized insurance losses
 - **Target:** `price` (USD)
 
 ## Tech Stack
 
-- Python 3.12
-- Pandas, NumPy, SciPy
-- Scikit-learn (KBinsDiscretizer, PowerTransformer, MinMaxScaler, 
-  OneHotEncoder, OrdinalEncoder)
-- Category Encoders (BinaryEncoder)
+- Python 3.9
+- Pandas, NumPy
+- Scikit-learn (PCA, StandardScaler, SimpleImputer, OneHotEncoder)
 - Matplotlib, Seaborn
 - Google Colab
 
 ## Methodology
 
-Focus: **Feature Engineering (FE)** — transforming raw specs into 
-model-ready features
+1. **Data Cleaning** — Handled missing values using SimpleImputer, removed 
+   inconsistencies
+2. **EDA** — Explored relationships between features and price using 
+   correlation analysis and visualizations
+3. **Preprocessing** — Encoded categorical variables, scaled numerical features
+4. **PCA** — Applied Principal Component Analysis to reduce dimensionality
 
-1. **EDA** — Analyzed 27 features across 100,000 records, identified 
-   missing values and outliers
-2. **Encoding Strategy** — Compared OrdinalEncoder, OneHotEncoder, and 
-   BinaryEncoder for high-cardinality categorical features (e.g., gpu_model 
-   with 49 unique values)
-3. **Scaling** — Applied MinMaxScaler and PowerTransformer (Yeo-Johnson) 
-   to normalize skewed distributions
-4. **Feature Creation** — Engineered `years_since_release` from 
-   `release_year` to capture depreciation effect
-5. **Discretization** — Applied KBinsDiscretizer for relevant numerical 
-   features
+## Key Results
 
-## Key Findings
+| Principal Component | Variance Explained |
+|---|---|
+| PC1 | 45% |
+| PC2 | 18% |
+| PC3 | 9% |
+| PC4 | 6% |
+| PC5 | 6% |
 
-- Dataset was clean with zero missing values across most features
-- GPU model was the highest-cardinality feature (49 unique values) — 
-  BinaryEncoder reduced dimensionality significantly vs OneHotEncoder
-- PowerTransformer effectively normalized price distribution skewness
-- `cpu_tier` and `gpu_tier` were the strongest predictors of price
-
-## Team
-
-Built collaboratively as part of a 4-person team (Equipo 16) in the 
-Applied Data Science course — Tecnológico de Monterrey MNA Program.
+The first 2 components explain **63% of total variance**, and the first 5 
+components capture **84%** — significantly reducing the feature space while 
+retaining most of the data's information structure.
 
 ## What I Learned
 
-- Handling high-cardinality categorical features at scale (100K records)
-- Choosing the right encoding strategy based on cardinality and model type
-- Feature engineering as the most impactful step in the ML lifecycle
-- Collaborative data science workflow with version control
+- How to handle real-world messy data with missing values and mixed types
+- Applying PCA to high-dimensional datasets and interpreting eigenvalues
+- How dimensionality reduction reveals hidden structure in automotive data
+- Trade-offs between number of components and variance retained
